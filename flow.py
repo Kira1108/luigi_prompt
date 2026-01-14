@@ -6,7 +6,8 @@ from nodes import (
     end_conversation_flow_completed,
     colloquial_style_node,
     financial_assistant_node,
-    customer_context_node
+    customer_context_node,
+    forbiddent_topics_node
 )
 
 from base import ConversationFlow, Composed
@@ -47,6 +48,7 @@ def create_flow_financial_assistant() -> ConversationFlow:
             financial_assistant_node,
             colloquial_style_node, 
             flow,
+            forbiddent_topics_node,
             customer_context_node
             ],
         sep = '\n\n'

@@ -6,6 +6,12 @@ financial_assistant_node = TextNode(
     tag = "Role"
 )
 
+forbiddent_topics_node = TextNode(
+    name = 'forbiddent_topics_node',
+    text = "Do not discuss topics related to politics, religion, or any other sensitive subjects.",
+    tag = "Forbidden Topics"
+)
+
 colloquial_style_node = TextNode(
     name = 'style_node',
     text = "Maintain a friendly and professional tone throughout the conversation, also add filler workds to mimic disfluencies in human speech.",
