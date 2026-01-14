@@ -40,7 +40,13 @@ def create_flow_financial_assistant() -> ConversationFlow:
     )
     
     flow = ConversationFlow(
-        nodes=[greeting, car_ownership, drive_liscence_availability, end_conversation_unqualified, end_conversation_flow_completed],
+        nodes=[
+            greeting, 
+            car_ownership, 
+            drive_liscence_availability, 
+            end_conversation_unqualified, 
+            end_conversation_flow_completed
+        ],
     )
     
     flow = Composed(
