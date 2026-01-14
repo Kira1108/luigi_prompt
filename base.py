@@ -1,6 +1,18 @@
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
+from typing import Protocol
 
+class Composable(ABC):
+    def format(self) -> str:
+        ...
+          
+class Composed:
+    def __init__(self, components: list[Composable], sep = "\n\n"):
+        self.components = components
+        self.sep = sep
+        
+    def format(self) -> str:
+        return self.sep.join([component.format() for component in self.components])
 @dataclass
 class Transition:
     condition: str
@@ -89,11 +101,15 @@ class ConversationFlow:
         self.global_instructions = global_instructions
         self.nodes = nodes
         for idx, node in enumerate(self.nodes):
+            
+            if not isinstance(node, ConversationNode):
+                raise ValueError("All nodes in ConversationFlow must be of type ConversationNode")
+            
             node.add_id(id=str(idx + 1))
         
     def format(self) -> str:
         flow_instruction = "\n\n".join([node.format() for node in self.nodes])
-        flow_instruction = "\n<Conversation Flow Definition>\n" + flow_instruction + "\n</Conversation Flow Definition>\n"
+        flow_instruction = "<Conversation Flow Definition>\n" + flow_instruction + "\n</Conversation Flow Definition>"
         
         if self.global_instructions:
             flow_instruction = self.global_instructions + "\n" + flow_instruction 
