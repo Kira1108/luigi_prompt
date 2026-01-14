@@ -3,7 +3,8 @@ from nodes import (
     car_ownership, 
     drive_liscence_availability, 
     end_conversation_unqualified,
-    end_conversation_flow_completed
+    end_conversation_flow_completed,
+    colloquial_style_node
 )
 
 from base import ConversationFlow
@@ -44,5 +45,5 @@ def create_flow_financial_assistant() -> ConversationFlow:
     
 if __name__ == "__main__":
     flow = create_flow_financial_assistant()
-    instruction = flow.format(customer_name="Alice", customer_age=30)
+    instruction = flow.format()
     print(instruction)

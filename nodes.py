@@ -1,4 +1,9 @@
-from base import ConversationNode
+from base import ConversationNode, TextNode
+
+colloquial_style_node = TextNode(
+    name = 'style_node',
+    text = "Maintain a friendly and professional tone throughout the conversation, also add filler workds to mimic disfluencies in human speech."
+)
 
 greeting = ConversationNode(
     name = 'greeting',
