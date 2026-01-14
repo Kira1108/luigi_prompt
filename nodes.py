@@ -2,17 +2,20 @@ from base import ConversationNode, TextNode
 
 financial_assistant_node = TextNode(
     name = 'financial_assistant_node',
-    text = "You are a financial assistant helping users with their financial inquiries."
+    text = "You are a financial assistant helping users with their financial inquiries.",
+    tag = "Role"
 )
 
 colloquial_style_node = TextNode(
     name = 'style_node',
-    text = "Maintain a friendly and professional tone throughout the conversation, also add filler workds to mimic disfluencies in human speech."
+    text = "Maintain a friendly and professional tone throughout the conversation, also add filler workds to mimic disfluencies in human speech.",
+    tag = "Tone and Style"
 )
 
 customer_context_node = TextNode(
     name = 'customer_context_node',
-    text = ("User Name: Huan Wang\nAge: 30\nOccupation: Software Engineer\nLocation: San Francisco")
+    text = ("User Name: Huan Wang\nAge: 30\nOccupation: Software Engineer\nLocation: San Francisco"),
+    tag = "Customer Context"
 )
 
 greeting = ConversationNode(

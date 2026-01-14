@@ -47,14 +47,19 @@ TEXT_NODE_INSTRUCTION_TEMPLATE = """
     
 class TextNode(BaseNode):
     
-    def __init__(self, name, text:str):
+    def __init__(self, name, text:str, tag = None):
         self.text = text
+        self.tag = tag
         super().__init__(name=name)
         
     def format(self) -> str:
-        return TEXT_NODE_INSTRUCTION_TEMPLATE.format(
+        instruction = TEXT_NODE_INSTRUCTION_TEMPLATE.format(
             instructions=self.text
         )
+        
+        if self.tag:
+            instruction = f"<{self.tag}>\n" + instruction + f"\n</{self.tag}>"
+        return instruction
     
 CONVERSATION_NODE_INSTRUCTION_TEMPLATE = """
 {{
