@@ -39,7 +39,7 @@ class ConversationNode:
         transitions_formatted = [
             {
                 "condition": t.condition,
-                "target_node": t.target_node.name
+                "target_node": t.target_node.id
             } for t in self.transitions
         ]
         return NODE_INSTRUCTION_TEMPLATE.format(
