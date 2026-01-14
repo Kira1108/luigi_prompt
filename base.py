@@ -13,6 +13,10 @@ class Composed(Composable):
         self.components = components
         self.sep = sep
         
+        for c in components:
+            if not isinstance(c, Composable):
+                raise ValueError("All components in Composed must implement the Composable interface")
+        
     def format(self) -> str:
         return self.sep.join([component.format() for component in self.components])
     
@@ -20,6 +24,10 @@ class Composed(Composable):
 class Transition:
     condition: str
     target_node: 'ConversationNode'
+    
+    def __post_init__(self):
+        if not isinstance(self.target_node, ConversationNode):
+            raise ValueError("target_node must be an instance of ConversationNode")
     
 
 class BaseNode(Composable):
