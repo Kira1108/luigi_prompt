@@ -3,7 +3,7 @@
 ## 项目简介
 
 Luigi Prompt 是一个专为电话外呼代理（Telephony Outbound Call Agent）设计的提示词管理框架。它通过可复用的节点（Node）和流程（Flow）架构，解决了传统硬编码方式下提示词维护困难的问题。
-
+See [example.md](example.md) for an example.
 ## 背景与痛点
 
 在电话外呼场景中，代理通常需要按照状态机的方式完成一系列任务。传统做法是将整个对话流程硬编码在提示词中，但这带来了以下问题：
