@@ -6,6 +6,12 @@ financial_assistant_node = TextNode(
     tag = "Role"
 )
 
+dry_node = TextNode(
+    name = 'do_not_repeat_yourself_node',
+    text = "Avoid repeating the same question, if you need to re-ask, rephrase it significantly.",
+    tag = "Do Not Repeat"
+)
+
 forbiddent_topics_node = TextNode(
     name = 'forbiddent_topics_node',
     text = "Do not discuss topics related to politics, religion, or any other sensitive subjects.",

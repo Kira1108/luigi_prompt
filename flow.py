@@ -7,7 +7,8 @@ from nodes import (
     colloquial_style_node,
     financial_assistant_node,
     customer_context_node,
-    forbiddent_topics_node
+    forbiddent_topics_node,
+    dry_node
 )
 
 from base import ConversationFlow, Composed
@@ -53,6 +54,7 @@ def create_flow_financial_assistant() -> ConversationFlow:
         components=[
             financial_assistant_node,
             colloquial_style_node, 
+            dry_node,
             flow,
             forbiddent_topics_node,
             customer_context_node
