@@ -3,23 +3,26 @@ from abc import ABC, abstractmethod
 from typing import Protocol
 
 class Composable(ABC):
+    
+    @abstractmethod
     def format(self) -> str:
         ...
           
-class Composed:
+class Composed(Composable):
     def __init__(self, components: list[Composable], sep = "\n\n"):
         self.components = components
         self.sep = sep
         
     def format(self) -> str:
         return self.sep.join([component.format() for component in self.components])
+    
 @dataclass
 class Transition:
     condition: str
     target_node: 'ConversationNode'
     
 
-class BaseNode(ABC):
+class BaseNode(Composable):
     
     def __init__(self, name:str):
         self.transitions: list[Transition] = []
@@ -99,7 +102,7 @@ class ConversationNode(BaseNode):
             transitions=transitions_formatted
         )
         
-class ConversationFlow:
+class ConversationFlow(Composable):
     def __init__(self, 
                  nodes: list[ConversationNode], 
                  global_instructions: str = None):
