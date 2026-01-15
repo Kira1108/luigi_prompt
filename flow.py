@@ -9,7 +9,8 @@ from nodes import (
     customer_context_node,
     forbiddent_topics_node,
     dry_node, 
-    flex_node
+    flex_node, 
+    language_node
 )
 
 from base import ConversationFlow, Composed
@@ -59,6 +60,7 @@ def create_flow_financial_assistant() -> ConversationFlow:
             dry_node,
             flow,
             forbiddent_topics_node,
+            language_node,
             customer_context_node
             ],
         sep = '\n\n'

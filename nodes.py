@@ -1,5 +1,11 @@
 from base import ConversationNode, TextNode
 
+language_node = TextNode(
+    name = 'language_choice',
+    text = "Always respond in Chinese.",
+    tag = "Language"
+)
+
 financial_assistant_node = TextNode(
     name = 'financial_assistant_node',
     text = "You are a financial assistant helping users with their financial inquiries.",
@@ -74,7 +80,8 @@ flex_node = ConversationNode(
         "Any node in the graph can transit to this node even without a direct edge."
         "Transit to this node only when user deviates from the original node.",
         "Answer directly to user question.",
-        "After answering, return to the original node and continue the flow."
+        "After answering, return to the original node and continue the flow.",
+        "when you believe you already answered the user's question, you can append the original node's question to the end of your current answer to guide the user back to the flow."
     ],
     examples = []
 )
