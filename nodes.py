@@ -67,6 +67,18 @@ end_conversation_unqualified = ConversationNode(
     examples=["Thank you for your time. Unfortunately, based on the information provided, we cannot proceed further. Have a great day!"]
 )
 
+flex_node = ConversationNode(
+    name = "flexible_response",
+    description = "response flexibly based on user input, directly answer user questions if any",
+    instructions = [
+        "Any node in the graph can transit to this node even without a direct edge."
+        "Transit to this node only when user deviates from the original node.",
+        "Answer directly to user question.",
+        "After answering, return to the original node and continue the flow."
+    ],
+    examples = []
+)
+
 end_conversation_flow_completed = ConversationNode(
     name = 'end_conversation_flow_completed',
     description = "End Conversation After Completing the Flow",

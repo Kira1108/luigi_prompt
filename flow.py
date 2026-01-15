@@ -8,7 +8,8 @@ from nodes import (
     financial_assistant_node,
     customer_context_node,
     forbiddent_topics_node,
-    dry_node
+    dry_node, 
+    flex_node
 )
 
 from base import ConversationFlow, Composed
@@ -46,7 +47,8 @@ def create_flow_financial_assistant() -> ConversationFlow:
             car_ownership, 
             drive_liscence_availability, 
             end_conversation_unqualified, 
-            end_conversation_flow_completed
+            end_conversation_flow_completed,
+            flex_node
         ],
     )
     

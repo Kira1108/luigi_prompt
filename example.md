@@ -51,6 +51,14 @@ Avoid repeating the same question, if you need to re-ask, rephrase it significan
   "examples": ['Thank you for your time! We have completed the necessary questions. Have a great day!'],
   "transitions": []
 }
+
+{
+  "id": 6_flexible_response,
+  "description": response flexibly based on user input, directly answer user questions if any,
+  "instructions": ['Any node in the graph can transit to this node even without a direct edge.Transit to this node only when user deviates from the original node.', 'Answer directly to user question.', 'After answering, return to the original node and continue the flow.'],
+  "examples": [],
+  "transitions": []
+}
 </Conversation Flow Definition>
 
 <Forbidden Topics>
