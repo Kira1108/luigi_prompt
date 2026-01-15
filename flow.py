@@ -10,7 +10,8 @@ from nodes import (
     forbiddent_topics_node,
     dry_node, 
     flex_node, 
-    language_node
+    language_node, 
+    identity_check_tool_node
 )
 
 from base import ConversationFlow, Composed
@@ -20,6 +21,11 @@ def create_flow_financial_assistant() -> ConversationFlow:
     greeting.transit_to(
         node=car_ownership,
         condition="User responds to greeting"
+    )
+    
+    greeting.transit_to(
+        node = identity_check_tool_node,
+        condition = "User provides personal information"
     )
         
     car_ownership.transit_to(
@@ -46,6 +52,7 @@ def create_flow_financial_assistant() -> ConversationFlow:
         nodes=[
             greeting, 
             car_ownership, 
+            identity_check_tool_node,
             drive_liscence_availability, 
             end_conversation_unqualified, 
             end_conversation_flow_completed,

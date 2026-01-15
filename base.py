@@ -22,10 +22,12 @@ class Composed(Composable):
 @dataclass
 class Transition:
     condition: str
-    target_node: 'ConversationNode'
+    target_node: 'BaseNode'
     
     def __post_init__(self):
-        if not isinstance(self.target_node, ConversationNode):
+        if not isinstance(self.target_node, BaseNode):
+            print(type(self.target_node))
+            print(self.target_node)
             raise ValueError("target_node must be an instance of ConversationNode")
     
 
@@ -108,6 +110,40 @@ class ConversationNode(BaseNode):
             examples=self.examples,
             transitions=transitions_formatted
         )
+
+TOOL_NODE_INSTRUCTION_TEMPLATE = """
+{{
+    
+    "id": {id},
+    "description": "In this step, you are expected to call a tool, you MUST call the tool specified below. the tool parameters should inferred from the conversation context.",
+    "tool_name": `{tool_name}`,
+    "trigger": {trigger_prompt},
+    "examples": {examples}
+}}
+""".strip()
+
+class ToolCallingNode(BaseNode):
+    def __init__(self,
+        name:str,
+        tool_name: str,
+        trigger_prompt: list[str],
+        examples: list[str] = None
+    ):
+        self.tool_name = tool_name
+        self.trigger_prompt = trigger_prompt
+        self.examples = examples if examples is not None else []
+        super().__init__(name=name)
+
+        
+    def format(self):
+        return TOOL_NODE_INSTRUCTION_TEMPLATE.format(
+            id=self.id,
+            tool_name=self.tool_name,
+            trigger_prompt=self.trigger_prompt,
+            examples=self.examples
+        )
+        
+
         
 class ConversationFlow(Composable):
     def __init__(self, 
@@ -117,7 +153,7 @@ class ConversationFlow(Composable):
         self.nodes = nodes
         for idx, node in enumerate(self.nodes):
             
-            if not isinstance(node, ConversationNode):
+            if not isinstance(node, ConversationNode) and not isinstance(node, ToolCallingNode):
                 raise ValueError("All nodes in ConversationFlow must be of type ConversationNode")
             
             node.add_id(id=str(idx + 1))

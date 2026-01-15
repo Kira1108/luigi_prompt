@@ -1,4 +1,4 @@
-from base import ConversationNode, TextNode
+from base import ConversationNode, TextNode, ToolCallingNode
 
 language_node = TextNode(
     name = 'language_choice',
@@ -10,6 +10,14 @@ financial_assistant_node = TextNode(
     name = 'financial_assistant_node',
     text = "You are a financial assistant helping users with their financial inquiries.",
     tag = "Role"
+)
+
+identity_check_tool_node = ToolCallingNode(
+    name = 'identity_check_tool_node',
+    tool_name = 'IdentityCheckTool',
+    trigger_prompt = [
+        "When the user provides personal information, call the IdentityCheckTool to verify their identity."
+    ]
 )
 
 dry_node = TextNode(
