@@ -114,11 +114,11 @@ class ConversationNode(BaseNode):
 TOOL_NODE_INSTRUCTION_TEMPLATE = """
 {{
     
-    "id": {id},
-    "description": "In this step, you are expected to call a tool, you MUST call the tool specified below. the tool parameters should inferred from the conversation context.",
-    "tool_name": `{tool_name}`,
-    "trigger": {trigger_prompt},
-    "examples": {examples}
+  "id": {id},
+  "description": "In this step, you are expected to call a tool, you MUST call the tool specified below. the tool parameters should inferred from the conversation context.",
+  "tool_name": `{tool_name}`,
+  "trigger": {trigger_prompt},
+  "examples": {examples}
 }}
 """.strip()
 
