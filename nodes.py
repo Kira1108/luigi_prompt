@@ -7,8 +7,8 @@ language_node = TextNode(
 )
 
 financial_assistant_node = TextNode(
-    name = 'financial_assistant_node',
-    text = "You are a financial assistant helping users with their financial inquiries.",
+    name = 'outboundcall_customer_service_role',
+    text = "You are a outboundcall customer service, collectining user information with colloquial style, friendly and prefessional tone.",
     tag = "Role"
 )
 
