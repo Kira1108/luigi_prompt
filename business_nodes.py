@@ -21,6 +21,8 @@ def create_yx_flow():
         instructions = [
             "include the customer's name in the greeting message, but do not include titles like ‘先生’ or '小姐', call his/her full name directly, in this node.",
             "You only call the full name in the opening greeting node, do not repeat full name in the following nodes.(use pronouns instead e.g. '您')"
+            "Pass Confidition: 'if not wrong name / wrong number' indicated by user response.",
+            "Fail Condition: 'if wrong name / wrong number' indicated by user response., like ‘打错了’, '我不是'"
         ],
         examples = ['您好，请问是... 吗？']
     )
@@ -65,47 +67,61 @@ def create_yx_flow():
             "那这辆车的绿本是在您手里吧？"
         ]
     )
-
-    qualification_fail_node  = ConversationNode(
-        name = 'qualification_fail_node',
-        description = "The user does not meet the qualification criteria for a financial support.",
-        instructions = [
-            "Reclaim the question(where the user fails the qualification), make sure the user's unqualification is clear.",
-            "If the previous unqualification reason is an asr error or the user seems confused, go back to the previous node and continue the conversation flow."
-            "If the user fails the qualification again, politely end the conversation."
-        ],
-        examples = [
-            "Agent:请问您按揭现在换完了吗？User：没有; Agent(reclaim and rephrase): 哦，您是说正在还款中，对吧？",
-            "那不好意思打扰您了，祝您生活愉快， 再见。"
-        ]
-    )
-
+    
     handoff_wechat_collector = ToolCallingNode(
         name = 'AgentHandoff Node',
         tool_name= 'transfer_to_wechat_account_collector',
         trigger_prompt = "Call the tool to transfer the qualified lead to a WeChat Account Collection Agent for further processing.",
     )
+    
+    hangup_node = ConversationNode(
+        name = "hangup_node",
+        description = "Politely end the conversation if the user fails any qualification step. (or being angry accross several turns)",
+        instructions = [
+            "Do reliamtion before ending the conversation",
+            "If the user fails any qualification step with retry and reclamation, politely end the conversation.",
+            "Thank the user for their time and express willingness to assist in the future.",
+            "Avoid pushing further or attempting to re-qualify the user.",
+            "Always include '再见' in you response in this node."
+        ],
+        examples = [
+            "非常感谢您的时间，如果您以后有任何需要，欢迎随时联系我们，祝您生活愉快, 再见！"
+        ]
+    )
 
+    global_retry_node = ConversationNode(
+        name = 'unqualified_retry_node',
+        description = "If the user indicates unqualification on any node, try the recliamation once.(For each unqulified reason, only retry once)",
+        instructions = [
+            "Reclaim the question where the user fails the qualification, make sure the user's unqualification is clear",
+            "Change the phrasing of the question to avoid repeating the same wording. (Robotic repetition may frustrate the user)",
+        ],
+        examples = [
+            "Agent:请问您按揭现在还完了吗？User：没有; Agent(reclaim and rephrase): 哦，您是说正在还款中，对吧？",
+        ]
+        
+    )
 
     greeting.transit_to(
         node=financial_support_inquiry,
         condition="User responds to greeting"
     )
-    greeting.transit_to(
-        node=qualification_fail_node,
-        condition="Use explicitly indicates a wrong number or false name.")
 
+    greeting.transit_to(
+        node=hangup_node,
+        condition="User indicates wrong name or wrong number."
+    )
 
     financial_support_inquiry.transit_to(
         node = payment_strategy_inquiry,
         condition = "User indicates they need financial support."
     )
-
-
+    
     financial_support_inquiry.transit_to(
-        node = qualification_fail_node,
-        condition = "User explicitly rejects or refuses financial support."
+        node = hangup_node,
+        condition = "User indicates they do not need financial support."
     )
+
 
     payment_strategy_inquiry.transit_to(
         node= vehicle_registration_inquiry,
@@ -113,19 +129,20 @@ def create_yx_flow():
     )
 
     payment_strategy_inquiry.transit_to(
-        node= qualification_fail_node,
-        condition="User indicates there is no car under his/her name or the car is still being financed."
+        node = hangup_node,
+        condition = "User indicates there is no car under his/her name., or the car is still being financed."
     )
 
     vehicle_registration_inquiry.transit_to(
         node= handoff_wechat_collector,
         condition="User confirms the vehicle registration is available."
     )
-
+    
     vehicle_registration_inquiry.transit_to(
-        node= qualification_fail_node,
+        node = hangup_node,
         condition="User indicates the vehicle registration is not available or is mortgaged."
     )
+
 
     flow = ConversationFlow(
         nodes=[
@@ -133,8 +150,9 @@ def create_yx_flow():
             financial_support_inquiry,
             payment_strategy_inquiry,
             vehicle_registration_inquiry,
-            qualification_fail_node,
             handoff_wechat_collector,
+            global_retry_node,
+            hangup_node,
             flex_node
         ],
     )
