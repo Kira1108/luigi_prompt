@@ -1,7 +1,6 @@
 from base import ConversationNode, TextNode, ToolCallingNode
 
 from nodes import (
-    greeting, 
     colloquial_style_node,
     financial_assistant_node,
     customer_context_node,
