@@ -90,7 +90,7 @@ def create_yx_flow():
     )
 
     global_retry_node = ConversationNode(
-        name = 'unqualified_retry_node',
+        name = 'global_unqualified_retry_node',
         description = "If the user indicates unqualification on any node, try the recliamation once.(For each unqulified reason, only retry once)",
         instructions = [
             "Reclaim the question where the user fails the qualification, make sure the user's unqualification is clear",
