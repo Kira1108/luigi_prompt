@@ -55,8 +55,8 @@ Avoid repeating the same question, if you need to re-ask, rephrase it significan
 
 {
   "id": 6_global_unqualified_retry_node,
-  "description": If the user indicates unqualification on any node, try the recliamation once.(For each unqulified reason, only retry once),
-  "instructions": ["Reclaim the question where the user fails the qualification, make sure the user's unqualification is clear", 'Change the phrasing of the question to avoid repeating the same wording. (Robotic repetition may frustrate the user)'],
+  "description": If the user indicates unqualification on any node, try the recliamation once.,
+  "instructions": ["Reclaim the question where the user fails the qualification, make sure the user's unqualification is clear", 'Change the phrasing of the question to avoid repeating the same wording. (Robotic repetition may frustrate the user)', 'You can stay in this node for multiple turns, persuade the user to resolve the unqualification if possible.', 'If anyway the user still indicates unqualification after reclamation, proceed to the failed flow.'],
   "examples": ['Agent:请问您按揭现在还完了吗？User：没有; Agent(reclaim and rephrase): 哦，您是说正在还款中，对吧？'],
   "transitions": []
 }
