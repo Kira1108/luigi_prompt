@@ -40,7 +40,7 @@ colloquial_style_node = TextNode(
 
 customer_context_node = TextNode(
     name = 'customer_context_node',
-    text = ("User Name: Huan Wang\nAge: 30\nOccupation: Software Engineer\nLocation: San Francisco"),
+    text = ("User Name: {customerName}\nAge: {customerAge}\nOccupation: {customerOccupation}\nLocation: {customerLocation}\n"),
     tag = "Customer Context"
 )
 

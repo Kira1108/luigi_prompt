@@ -14,13 +14,25 @@ from base import ConversationFlow, Composed
 
 
 def create_yx_flow():
+    
+    universal_node = ConversationNode(
+        name = 'universal_instruction',
+        description = 'instruction applied to all nodes',
+        instructions = [
+            "NodeType:Retry on Fail or Proceed Forward",
+            "When the customer hits a fail condition, retry the question once but use different wording (rephrasing) to ask again.",
+            "Rephrasing should avoid robotic repetition that my frustrate the customer.",
+            "You can relclaim multiple turns in the same node to persuade the customer to resolve the unqualification if possible.",
+            "Only if the user explicitly indicates the unqualification is true and reclaimation fails, proceed to the failed flow.",
+        ]
+    )
     greeting = ConversationNode(
         name = "greeting",
         description = "greet the user",
         instructions = [
             "include the customer's name in the greeting message, but do not include titles like ‘先生’ or '小姐', call his/her full name directly, in this node.",
             "You only call the full name in the opening greeting node, do not repeat full name in the following nodes.(use pronouns instead e.g. '您')"
-            "Pass Confidition: 'if not wrong name / wrong number' indicated by user response.",
+            "Pass Confidition: 'User responds to the greeting.(Loose condition, any response counts except the fail condition)'",
             "Fail Condition: 'if wrong name / wrong number' indicated by user response., like ‘打错了’, '我不是'"
         ],
         examples = ['您好，请问是... 吗？']
@@ -32,10 +44,10 @@ def create_yx_flow():
         instructions = [
             "Ask a yes/no question about financial support needs.",
             "You should include you self as `[clueSource]合作方易鑫集团....`, plug in the variable[clueSource] from context.",
-            "Pass condition: user do not reject or refuse financial support.(呃， 啊， 嗯， 可以，好的， 你说)",
+            "Pass condition: (Relatively loose condition) user do not reject or refuse financial support.(呃， 啊， 嗯， 可以，好的， 你说, 有， '需要')",
             "Fail condition: user explicitly reject or refuse financial support.（不需要，没兴趣，不不不，不想要）"
         ],
-        examples = ['这边是[clueSource]合作方易鑫集团的金融专属顾问，我们收到了您申请的汽车金融方案，请问您是有资金需求吗？']
+        examples = ['这边是...合作方易鑫集团的金融专属顾问，我们收到了您申请的汽车金融方案，请问您是有资金需求吗？']
     )
 
     payment_strategy_inquiry = ConversationNode(
@@ -60,7 +72,7 @@ def create_yx_flow():
             "Ask if the the vehicle registration (green book) is currently available.(在手里, not mortagaged and can be provided)",
             "Pass condition: user confirms the vehicle registration is available.",
             "Fail condition: user indicates the vehicle registration is not available or is mortgaged.",
-            "Vehicle registration if also referred to as '绿本', ‘大本’ in Chinese."
+            "Vehicle registration is also referred to as '绿本', ‘大本’ in Chinese."
         ],
         examples = [
             "那这辆车的绿本是在您手里吧？"
@@ -77,7 +89,6 @@ def create_yx_flow():
         name = "hangup_node",
         description = "Politely end the conversation if the user fails any qualification step. (or being angry accross several turns)",
         instructions = [
-            "Do reliamtion before ending the conversation",
             "If the user fails any qualification step with retry and reclamation, politely end the conversation.",
             "Thank the user for their time and express willingness to assist in the future.",
             "Avoid pushing further or attempting to re-qualify the user.",
@@ -146,12 +157,12 @@ def create_yx_flow():
 
     flow = ConversationFlow(
         nodes=[
+            universal_node,
             greeting,
             financial_support_inquiry,
             payment_strategy_inquiry,
             vehicle_registration_inquiry,
             handoff_wechat_collector,
-            global_retry_node,
             hangup_node,
             flex_node
         ],
